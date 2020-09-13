@@ -7,6 +7,44 @@ import java.util.concurrent.Future;
 
 public class Mergesort {
 
+    public static void main(String[] args) {
+        int size = 1000000;
+        String type = "ES"; //Possible values: SEQ, ES, LAM, RA
+
+        /* Creating the unsorted list */
+        Integer[] list = createList(size, false);
+        int low = 0;
+        int high = list.length-1;
+
+
+        /* Sort array according to type */
+        long start = System.currentTimeMillis();
+
+        if (type == "SEQ") {
+            sort(list, low, high);
+        } else if (type == "ES") {
+            Mergesort_ES mses = new Mergesort_ES(list, low, high);
+            try {
+                mses.call();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            mses.ES.shutdown();
+        } else if (type == "LAM") {
+
+        } else if (type == "RA") {
+
+        }
+        long end = System.currentTimeMillis();
+        long time_taken = end-start;
+
+        /* Print total time taken */
+        System.out.println("TOTAL TIME: " + time_taken + "ms");
+
+
+
+    }
+
     public static void merge(Integer[] array, int low, int mid, int high) {
         int leftArray[] = new int[mid - low + 1];
         int rightArray[] = new int[high - mid];
@@ -73,40 +111,6 @@ public class Mergesort {
         }
 
         return list;
-    }
-
-    public static void main(String[] args) throws Exception {
-        int size = 1000000;
-        String type = "ES"; //Possible values: SEQ, ES, LAM, RA
-
-        /* Creating the unsorted list */
-        Integer[] list = createList(size, false);
-        int low = 0;
-        int high = list.length-1;
-
-
-        /* Sort array according to type */
-        long start = System.currentTimeMillis();
-
-        if (type == "SEQ") {
-            sort(list, low, high);
-        } else if (type == "ES") {
-            Mergesort_ES mses = new Mergesort_ES(list, low, high);
-            mses.call();
-            mses.ES.shutdown();
-        } else if (type == "LAM") {
-
-        } else if (type == "RA") {
-
-        }
-        long end = System.currentTimeMillis();
-        long time_taken = end-start;
-
-        /* Print total time taken */
-        System.out.println("TOTAL TIME: " + time_taken + "ms");
-
-
-
     }
 }
 
