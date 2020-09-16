@@ -10,8 +10,9 @@ import java.util.*;
 public class Mergesort {
 
     public static void main(String[] args) throws Exception {
-        int size = 1000000;
+        int size = 25000000;
         String type = "ES"; //Possible values: SEQ, ES, LAM, RA
+        int threads = 8;
 
         /* Creating the sorted and unsorted list */
         Integer[] list = createReverseList(size);
@@ -34,7 +35,7 @@ public class Mergesort {
             MergeLambda lam = new MergeLambda();
             lam.MergesortLambda(list, low, high);
         } else if (type == "RA") {
-            ForkJoinPool pool = new ForkJoinPool();
+            ForkJoinPool pool = new ForkJoinPool(threads);
             pool.invoke(new Mergesort_RA(list, low, high));
         }
 
@@ -130,7 +131,7 @@ class Boundary {
 }
 
 class MergeLambda {
-    public final int START_SEQ = 10;
+    public final int START_SEQ = 100000;
 
     public MergeLambda() {
 
@@ -189,33 +190,8 @@ class Mergesort_RA extends RecursiveAction {
             invokeAll(new Mergesort_RA(array, low, mid),
                     new Mergesort_RA(array, mid + 1, high));
             // merge both sides
-            merge(array, low, mid, high);
+            Mergesort.merge(array, low, mid, high);
         }
-    }
-
-    void merge(Integer[] numbers, int startA, int startB, int endB) {
-        Integer[] toReturn = new Integer[endB - startA + 1];
-        int i = 0, k = startA, j = startB + 1;
-        while (i < toReturn.length) {
-            if (numbers[k] < numbers[j]) {
-                toReturn[i] = numbers[k];
-                k++;
-            } else {
-                toReturn[i] = numbers[j];
-                j++;
-            }
-            i++;
-            // if we hit the limit of an array, copy the rest
-            if (j > endB) {
-                System.arraycopy(numbers, k, toReturn, i, startB - k + 1);
-                break;
-            }
-            if (k > startB) {
-                System.arraycopy(numbers, j, toReturn, i, endB - j + 1);
-                break;
-            }
-        }
-        System.arraycopy(toReturn, 0, numbers, startA, toReturn.length);
     }
 }
 
