@@ -177,19 +177,19 @@ class Mergesort_RA extends RecursiveAction {
     @Override
     protected void compute() {
         if (high - low < 2) {
-            // swap if we only have two elements
+            
             if (array[low] > array[high]) {
                 int tmp = array[high];
                 array[high] = array[low];
                 array[low] = tmp;
             }
         } else {
-            // overflow safe method to calculate the mid
+            
             int mid = (low + high) >>> 1;
-            // invoke recursive sorting action
+            
             invokeAll(new Mergesort_RA(array, low, mid),
                     new Mergesort_RA(array, mid + 1, high));
-            // merge both sides
+     
             Mergesort.merge(array, low, mid, high);
         }
     }
