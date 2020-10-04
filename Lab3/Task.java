@@ -59,7 +59,7 @@ class Task3 {
 
 				if (opToDo < (int) (frac[0] * 100)) {          //ADD    
                     list.add(random_element);
-				} else if (opToDo < (int) (frac[1] * 100)) {   //REMOVE
+				} else if (opToDo < ((int) (frac[1] * 100 + frac[0]*100))) {   //REMOVE
                     list.remove(random_element);
 				} else {                                      //CONTAINS
                     list.contains(random_element);
