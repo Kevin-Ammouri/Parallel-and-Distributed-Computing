@@ -7,8 +7,8 @@ class Task2 {
     public Task2(int elements, int MAX_VALUE) {
         pop1 = new Skiplist<>();
         pop2 = new Skiplist<>();
-        int mean = 5000000;
-        int stddev = 1666666;
+        int mean = 50000;
+        int stddev = 16666;
         for (int i = 0; i < elements; i++) {
             int intToAdd = new Random().nextInt(MAX_VALUE);
 			pop1.add(intToAdd);
@@ -51,8 +51,8 @@ class Task3 {
                 if (pop == 1) {
                     random_element = new Random().nextInt(MAX_VALUE);
                 } else {
-                    int mean = 5000000;
-                    int stddev = 1666666;
+                    int mean = 50000;
+                    int stddev = 16666;
                     double gaussToAdd = new Random().nextGaussian() * stddev + mean;
                     random_element = (int) gaussToAdd;
                 }
@@ -69,7 +69,7 @@ class Task3 {
 	}
 
 	int NUM_THREADS;
-    int operations = 1000000;
+    int operations = 10000;
     long duration;
 
 	public Task3(int threads, double[] fractions, int MAX_VALUE, Skiplist<Integer> list, int pop) {
@@ -138,7 +138,7 @@ public class Task {
         //                  int listNumber
 
         double[] fractions = {0.1, 0.1, 0.8}; //Add, Remove, Contains
-		int numberOfThreads = 10;
+		int numberOfThreads = 2;
 
         Task3 t3_l1 = new Task3(numberOfThreads, fractions, MAX_VALUE, pop1, 1);
         long dur1 = t3_l1.getDuration();
@@ -166,7 +166,7 @@ public class Task {
 
 		// returns the current value of the system timer, in nanoseconds
         // System.out.println("time in nanoseconds = " + System.nanoTime());
-    
+        
 
     }
 }
