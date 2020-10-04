@@ -115,7 +115,7 @@ public class Task {
         // Population2: pop2 = size 10^7 elements with normaldist, mean 5 000 000. and stnd 1 666 666.
         System.out.println("Number of available processors: " + Runtime.getRuntime().availableProcessors());
         int elements = 100000;
-        int MAX_VALUE = 100000000;
+        int MAX_VALUE = 100000;
         Task2 t2 = new Task2(elements, MAX_VALUE);
         Skiplist<Integer> pop1 = t2.getList1();
 		Skiplist<Integer> pop2 = t2.getList2();
