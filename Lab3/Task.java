@@ -1,16 +1,14 @@
 import java.util.Random;
-import java.lang.*;
 
 class Task2 {
     Skiplist<Integer> pop1;
     Skiplist<Integer> pop2;
+
     public Task2(int elements, int MAX_VALUE) {
         pop1 = new Skiplist<>();
         pop2 = new Skiplist<>();
-        
         int mean = 5000000;
-		int stddev = 1666666;
-
+        int stddev = 1666666;
         for (int i = 0; i < elements; i++) {
             int intToAdd = new Random().nextInt(MAX_VALUE);
 			pop1.add(intToAdd);
@@ -59,11 +57,11 @@ class Task3 {
                     random_element = (int) gaussToAdd;
                 }
 
-				if (opToDo < (int) (frac[0] * 100)) {           //ADD    
+				if (opToDo < (int) (frac[0] * 100)) {          //ADD    
                     list.add(random_element);
-				} else if (opToDo < (int) (frac[1] * 100)) {    //REMOVE
+				} else if (opToDo < (int) (frac[1] * 100)) {   //REMOVE
                     list.remove(random_element);
-				} else {//opToDo > frac[2]*100                  //CONTAINS
+				} else {                                      //CONTAINS
                     list.contains(random_element);
 				}
             }
@@ -116,7 +114,7 @@ public class Task {
 		// Population1: pop1 = size 10^7 elements with random values between 0 and 10^7
         // Population2: pop2 = size 10^7 elements with normaldist, mean 5 000 000. and stnd 1 666 666.
         System.out.println("Number of available processors: " + Runtime.getRuntime().availableProcessors());
-        int elements = 10000000;
+        int elements = 100000;
         int MAX_VALUE = 100000000;
         Task2 t2 = new Task2(elements, MAX_VALUE);
         Skiplist<Integer> pop1 = t2.getList1();
