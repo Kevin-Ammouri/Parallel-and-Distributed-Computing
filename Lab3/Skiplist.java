@@ -74,7 +74,7 @@ public final class Skiplist<T> {
 				// We did try the task 4 but relized how bad this is because of systemcalls etc..
 				// Hence we do not have any implmentaiton left. 
 				//----------------------------------------------------------------------
-				// For task 6 we implemented a lock to prevent measurment errors. ¤Atomic
+				// For task 6 we implemented a lock to prevent measurment errors. Atomic
 				// Did we see any noticeble effect as the number of threads increased?
 				// .....
 				lock.lock();
