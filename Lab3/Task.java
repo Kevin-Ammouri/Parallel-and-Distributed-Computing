@@ -100,6 +100,10 @@ class Task3 {
     }
 }
 
+class Task4 {
+    
+}
+
 /*  ---------------------------------------
 *	
 *   Main - running all the task from 2 - 11
@@ -113,6 +117,8 @@ public class Task {
 		// Call task 2 for generating two different random populations.
 		// Population1: pop1 = size 10^7 elements with random values between 0 and 10^7
         // Population2: pop2 = size 10^7 elements with normaldist, mean 5 000 000. and stnd 1 666 666.
+
+        
         System.out.println("Number of available processors: " + Runtime.getRuntime().availableProcessors());
         int elements = 100000;
         int MAX_VALUE = 100000;
@@ -121,6 +127,8 @@ public class Task {
 		Skiplist<Integer> pop2 = t2.getList2();
 
         System.out.println("Populated both skiplists..");
+        
+
         // ----------------------------------------------------------------------------------------- //
         // --------------------------------------- TASK 3 ------------------------------------------ //		
         // ----------------------------------------------------------------------------------------- //
@@ -137,7 +145,8 @@ public class Task {
         //                  Skiplist<Integer> list, 
         //                  int listNumber
 
-        double[] fractions = {0.1, 0.1, 0.8}; //Add, Remove, Contains
+        
+        double[] fractions = {0.5, 0.25, 0.25}; //Add, Remove, Contains
 		int numberOfThreads = 2;
 
         Task3 t3_l1 = new Task3(numberOfThreads, fractions, MAX_VALUE, pop1, 1);
@@ -154,6 +163,7 @@ public class Task {
             System.out.print(fraction + " ");
         }
         System.out.println("\nDuration for list 1 (uniform): " + dur1 + " ms\nDuration for list 2 (gaussian): " + dur2 + " ms");
+        
 
         // ----------------------------------------------------------------------------------------- //
         // --------------------------------------- TASK 4 ------------------------------------------ //		

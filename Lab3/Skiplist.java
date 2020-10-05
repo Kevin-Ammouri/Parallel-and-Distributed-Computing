@@ -1,10 +1,14 @@
 import java.util.concurrent.atomic.AtomicMarkableReference;
 import java.util.Random;
+import java.util.concurrent.locks.ReentrantLock;
 
 public final class Skiplist<T> {
 	static final int MAX_LEVEL = 3;
 	final Node<T> head = new Node<T>(Integer.MIN_VALUE);
 	final Node<T> tail = new Node<T>(Integer.MAX_VALUE);
+	private final ReentrantLock lock = new ReentrantLock();
+	private long[] nano_history = new long[1000];
+	private int nano_pointer = 0;
 
 	public Skiplist() {
 		for (int i = 0; i < head.next.length; i++) {
@@ -63,9 +67,31 @@ public final class Skiplist<T> {
                 }
                 Node<T> pred = preds[bottomLevel];
                 Node<T> succ = succs[bottomLevel];
-                if (!pred.next[bottomLevel].compareAndSet(succ, newNode, false, false)) {
-                    continue;
-                }
+				if (!pred.next[bottomLevel].compareAndSet(succ, newNode, false, false)) {
+					continue;
+				}
+				// -------------------Task 4 and Task 6--------------------------------//
+				// We did try the task 4 but relized how bad this is because of systemcalls etc..
+				// Hence we do not have any implmentaiton left. 
+				//----------------------------------------------------------------------
+				// For task 6 we implemented a lock to prevent measurment errors. ¤Atomic
+				// Did we see any noticeble effect as the number of threads increased?
+				// .....
+				lock.lock();
+				if (nano_pointer < nano_history.length) {
+					try {
+						nano_history[nano_pointer] = System.nanoTime();
+						nano_pointer++;
+					} catch (Exception e) {
+						e.printStackTrace();
+					} finally {
+						lock.unlock();
+					}
+				} else {
+					lock.unlock();
+				}
+				//-----------------------------------------------------------------//
+
 				for (int level = bottomLevel + 1; level <= topLevel; level++) {
 					while (true) {
                         pred = preds[level];
@@ -167,7 +193,7 @@ public final class Skiplist<T> {
 			while (true) {
 				succ = curr.next[level].get(marked);
 				while (marked[0]) {
-					curr = pred.next[level].getReference();
+					curr = succ;
 					succ = curr.next[level].get(marked);
 				}
 				if (curr.key < v) {
@@ -179,5 +205,9 @@ public final class Skiplist<T> {
 			}
 		}
 		return (curr.key == v);
+	}
+
+	public long[] getNanoList() {
+		return nano_history;
 	}
 }
