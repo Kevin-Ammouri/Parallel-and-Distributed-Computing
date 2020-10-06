@@ -78,9 +78,9 @@ public final class Skiplist<T> {
 				}
 				//----------------------- Linearisation point - Successful---------------------//
 				/* Task 10 */
-				LogContent<Integer> lc = new LogContent("add", x, System.nanoTime());
-				queue.add(lc);
-				/* Task 6-9
+				//LogContent<Integer> lc = new LogContent("add", x, System.nanoTime());
+				//queue.add(lc);
+				
 				//lock.lock();
 				try {
 					LogContent<Integer> lc = new LogContent("add", x, System.nanoTime());
@@ -90,7 +90,7 @@ public final class Skiplist<T> {
 				} finally {
 					//lock.unlock();
 				}
-				*/
+				
 				
 				//-----------------------------------------------------------------//
 
@@ -136,9 +136,9 @@ public final class Skiplist<T> {
 					
 					if (iMarkedIt) {
 						/* Task 10 */
-						LogContent<Integer> lc = new LogContent("remove", x, System.nanoTime());
-						queue.add(lc);
-						/* Task 6-9
+						//LogContent<Integer> lc = new LogContent("remove", x, System.nanoTime());
+						//queue.add(lc);
+						
 						//----------------------- Linearisation point - Successful---------------------//
 						//lock.lock();
 						try {
@@ -149,7 +149,7 @@ public final class Skiplist<T> {
 						} finally {
 							//lock.unlock();
 						}
-						*/
+						
 					}
 
 					succ = succs[bottomLevel].next[bottomLevel].get(marked);
@@ -230,9 +230,9 @@ public final class Skiplist<T> {
 		}
 		if (curr.key == v) {
 			/* Task 10 */
-			LogContent<Integer> lc = new LogContent("contains", x, System.nanoTime());
-			queue.add(lc);
-			/* Task 6-9
+			//LogContent<Integer> lc = new LogContent("contains", x, System.nanoTime());
+			//queue.add(lc);
+			
 			//lock.lock();
 			try {
 				LogContent<Integer> lc = new LogContent("contains", x, System.nanoTime());
@@ -242,7 +242,7 @@ public final class Skiplist<T> {
 			} finally {
 				//lock.unlock();
 			}
-			*/
+			
 		}
 		return (curr.key == v);
 	}

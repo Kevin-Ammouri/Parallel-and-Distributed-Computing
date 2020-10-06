@@ -244,7 +244,7 @@ public class Task {
         //                  Skiplist<Integer> list, 
         //                  int listNumber
 
-        /*
+        
 
         Task3 t3_l1 = new Task3(numberOfThreads, fractions, MAX_VALUE, gauss_info, pop1, 1);
         long dur1 = t3_l1.getDuration();
@@ -260,7 +260,7 @@ public class Task {
             System.out.print(fraction + " ");
         }
         System.out.println("\nDuration for list 1 (uniform): " + dur1 + " ms\nDuration for list 2 (gaussian): " + dur2 + " ms");
-        */
+        
         // ----------------------------------------------------------------------------------------- //
         // --------------------------------------- TASK 4-9 ------------------------------------------ //		
 		// ----------------------------------------------------------------------------------------- //
@@ -306,7 +306,8 @@ public class Task {
         */
         // ----------------------------------------------------------------------------------------- //
         // --------------------------------------- TASK 10 ------------------------------------------ //		
-		// ----------------------------------------------------------------------------------------- //
+        // ----------------------------------------------------------------------------------------- //
+        /*
         ArrayList<LogContent<Integer>> logList1 = new ArrayList<LogContent<Integer>>();
         ArrayList<LogContent<Integer>> logList2 = new ArrayList<LogContent<Integer>>();
 
@@ -366,7 +367,7 @@ public class Task {
         System.out.println("Number of inconsistent operations (remove->contains) or (contains->add) [LIST2]: " + wrong2);
 
         System.out.println("\nDuration for list 1 (uniform): " + dur1 + " ms\nDuration for list 2 (gaussian): " + dur2 + " ms");
-      
+        */
     }
 }
 
