@@ -1,14 +1,19 @@
 import java.util.concurrent.atomic.AtomicMarkableReference;
+import java.util.HashMap;
 import java.util.Random;
 import java.util.concurrent.locks.ReentrantLock;
+import java.util.Queue;
+import java.util.LinkedList;
 
 public final class Skiplist<T> {
 	static final int MAX_LEVEL = 3;
 	final Node<T> head = new Node<T>(Integer.MIN_VALUE);
 	final Node<T> tail = new Node<T>(Integer.MAX_VALUE);
 	private final ReentrantLock lock = new ReentrantLock();
-	private long[] nano_history = new long[1000];
-	private int nano_pointer = 0;
+	Queue<LogContent<Integer>> queue = new LinkedList<>();
+	
+	// Hashmap for Logging.
+	HashMap<Long, LogContent<Integer>> logMap = new HashMap<>();
 
 	public Skiplist() {
 		for (int i = 0; i < head.next.length; i++) {
@@ -57,7 +62,8 @@ public final class Skiplist<T> {
 
         while(true) {
             boolean found = find(x, preds, succs);
-            if (found) {
+			if (found) {
+				//----------------------- Linearisation point - Successful---------------------//
                 return false;
             } else {
                 Node<T> newNode = new Node(x, topLevel);
@@ -70,26 +76,22 @@ public final class Skiplist<T> {
 				if (!pred.next[bottomLevel].compareAndSet(succ, newNode, false, false)) {
 					continue;
 				}
-				// -------------------Task 4 and Task 6--------------------------------//
-				// We did try the task 4 but relized how bad this is because of systemcalls etc..
-				// Hence we do not have any implmentaiton left. 
-				//----------------------------------------------------------------------
-				// For task 6 we implemented a lock to prevent measurment errors. Atomic
-				// Did we see any noticeble effect as the number of threads increased?
-				// .....
-				lock.lock();
-				if (nano_pointer < nano_history.length) {
-					try {
-						nano_history[nano_pointer] = System.nanoTime();
-						nano_pointer++;
-					} catch (Exception e) {
-						e.printStackTrace();
-					} finally {
-						lock.unlock();
-					}
-				} else {
-					lock.unlock();
+				//----------------------- Linearisation point - Successful---------------------//
+				/* Task 10 */
+				LogContent<Integer> lc = new LogContent("add", x, System.nanoTime());
+				queue.add(lc);
+				/* Task 6-9
+				//lock.lock();
+				try {
+					LogContent<Integer> lc = new LogContent("add", x, System.nanoTime());
+					logMap.put(System.nanoTime(), lc);
+				} catch (Exception e) {
+					e.printStackTrace();
+				} finally {
+					//lock.unlock();
 				}
+				*/
+				
 				//-----------------------------------------------------------------//
 
 				for (int level = bottomLevel + 1; level <= topLevel; level++) {
@@ -115,6 +117,7 @@ public final class Skiplist<T> {
 		while (true) {
 			boolean found = find(x, preds, succs);
 			if (!found) {
+				//----------------------- Linearisation point - Unsuccessful ---------------------//
 				return false;
 			} else{
 				Node<T> nodeToRemove = succs[bottomLevel];
@@ -130,8 +133,29 @@ public final class Skiplist<T> {
 				succ = nodeToRemove.next[bottomLevel].get(marked);
 				while (true) {
 					boolean iMarkedIt = nodeToRemove.next[bottomLevel].compareAndSet(succ, succ, false, true);
+					
+					if (iMarkedIt) {
+						/* Task 10 */
+						LogContent<Integer> lc = new LogContent("remove", x, System.nanoTime());
+						queue.add(lc);
+						/* Task 6-9
+						//----------------------- Linearisation point - Successful---------------------//
+						//lock.lock();
+						try {
+							LogContent<Integer> lc = new LogContent("remove", x, System.nanoTime());
+							logMap.put(System.nanoTime(), lc);
+						} catch (Exception e) {
+							e.printStackTrace();
+						} finally {
+							//lock.unlock();
+						}
+						*/
+					}
+
 					succ = succs[bottomLevel].next[bottomLevel].get(marked);
 					if (iMarkedIt) {
+						
+
 						find(x, preds, succs);
 						return true;
 					} else if (marked[0]) {
@@ -204,10 +228,26 @@ public final class Skiplist<T> {
 				}
 			}
 		}
+		if (curr.key == v) {
+			/* Task 10 */
+			LogContent<Integer> lc = new LogContent("contains", x, System.nanoTime());
+			queue.add(lc);
+			/* Task 6-9
+			//lock.lock();
+			try {
+				LogContent<Integer> lc = new LogContent("contains", x, System.nanoTime());
+				logMap.put(System.nanoTime(), lc);
+			} catch (Exception e) {
+				e.printStackTrace();
+			} finally {
+				//lock.unlock();
+			}
+			*/
+		}
 		return (curr.key == v);
 	}
 
-	public long[] getNanoList() {
-		return nano_history;
+	public HashMap<Long, LogContent<Integer>> getLogMap() {
+		return logMap;
 	}
 }
